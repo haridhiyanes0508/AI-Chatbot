@@ -1,0 +1,63 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class AIChatBot {
+
+    private static Map<String, String> knowledgeBase = new HashMap<>();
+
+    public static void main(String[] args) {
+        initializeKnowledgeBase();
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Hello! I'm your AI Chatbot. How can I help you today?");
+        
+        while (true) {
+            System.out.print("You: ");
+            String userInput = scanner.nextLine().toLowerCase();
+
+            if (userInput.equals("exit") || userInput.equals("bye")) {
+                System.out.println("Chatbot: Goodbye! Have a great day!");
+                break;
+            }
+
+            String response = getResponse(userInput);
+            System.out.println("Chatbot: " + response);
+        }
+
+        scanner.close();
+    }
+
+    // Predefined knowledge base (NLP-like matching)
+    private static void initializeKnowledgeBase() {
+        knowledgeBase.put("hello", "Hello there! How can I assist you?");
+        knowledgeBase.put("hi", "Hi! What can I do for you?");
+        knowledgeBase.put("how are you", "I'm an AI, but I'm functioning as expected!");
+        knowledgeBase.put("what is your name", "I'm an AI Chatbot created to assist you.");
+        knowledgeBase.put("thank you", "You're welcome!");
+        knowledgeBase.put("bye", "Goodbye! See you soon.");
+        knowledgeBase.put("help", "Sure, I'm here to help! What do you need?");
+    }
+
+    // Find a matching response or learn a new one
+    private static String getResponse(String input) {
+        for (String key : knowledgeBase.keySet()) {
+            if (input.contains(key)) {
+                return knowledgeBase.get(key);
+            }
+        }
+
+        // Learn new response
+        return learnNewResponse(input);
+    }
+
+    // Learn a new response dynamically
+    private static String learnNewResponse(String input) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Chatbot: I'm not sure how to respond. How should I reply?");
+        System.out.print("Teach me: ");
+        String newResponse = scanner.nextLine();
+        knowledgeBase.put(input, newResponse);
+        return "Thanks! I'll remember that.";
+    }
+}
